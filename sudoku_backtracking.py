@@ -1,6 +1,7 @@
 from math import sqrt
 size = 9 #Size of sudoku (9)
 sqrt_size = int(sqrt(size))
+'''
 board = [[0, 0, 8, 1, 0, 0, 5, 9, 2],
         [5, 0, 9, 0, 0, 0, 1, 8, 0],
         [0, 0, 2, 8, 0, 5, 3, 4, 6],
@@ -10,6 +11,7 @@ board = [[0, 0, 8, 1, 0, 0, 5, 9, 2],
         [0, 0, 7, 2, 1, 6, 4, 0, 0],
         [0, 0, 0, 0, 0, 0, 6, 1, 0],
         [6, 0, 1, 0, 4, 3, 7, 0, 0]]
+'''
 
 # Checks if you can put a number in a certain place in the board.
 def isCorrectlyPlaced(a, b, n, board):
@@ -47,7 +49,6 @@ def print_board(board):
 def sudoku_backtrack(board):
     row, col = lookForSpace(board)
     if row == None: # When there are no empty spaces, we're done.
-        print_board(board)
         return True
     for k in range(1, size+1): # Tries to place all 9 possible numbers.
         if isCorrectlyPlaced(row, col, k, board):
@@ -57,5 +58,5 @@ def sudoku_backtrack(board):
             board[row][col] = 0 # If a mistake is made, we empty the space again.
     return False
 
-print_board(board)
-sudoku_backtrack(board)
+
+print("dfjadñfljsaljfsd")
