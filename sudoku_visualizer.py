@@ -2,19 +2,20 @@ from tkinter import *
 from sudoku_backtracking import *
 import time
 
+
 class BuildProgram(object):
     def __init__(self, master):
         self.master = master
 
-        self.board = [[0, 0, 8, 1, 0, 0, 5, 9, 2],
-        [5, 0, 9, 0, 0, 0, 1, 8, 0],
-        [0, 0, 2, 8, 0, 5, 3, 4, 6],
-        [0, 0, 5, 0, 0, 0, 8, 7, 4],
-        [8, 0, 0, 0, 5, 0, 2, 0, 1],
-        [1, 0, 6, 0, 0, 0, 9, 0, 0],
-        [0, 0, 7, 2, 1, 6, 4, 0, 0],
-        [0, 0, 0, 0, 0, 0, 6, 1, 0],
-        [6, 0, 1, 0, 4, 3, 7, 0, 0]]
+        self.board = [[0, 0, 0, 0, 0, 0, 9, 0, 0],
+                      [0, 0, 9, 0, 4, 3, 0, 8, 0],
+                      [3, 0, 0, 7, 0, 1, 0, 0, 0],
+                      [0, 0, 0, 0, 8, 0, 0, 0, 9],
+                      [0, 0, 5, 0, 0, 0, 0, 6, 0],
+                      [4, 6, 0, 0, 0, 0, 5, 0, 0],
+                      [0, 0, 8, 6, 0, 0, 0, 4, 0],
+                      [0, 5, 0, 0, 7, 0, 0, 0, 0],
+                      [0, 4, 0, 1, 5, 0, 7, 2, 0]]
 
         self.squares = [[0]*9 for _ in range(9)]
 
@@ -22,16 +23,18 @@ class BuildProgram(object):
             for i in range(9):
                 for j in range(9):
                     if self.board[i][j] == 0:
-                        self.squares[i][j] = Label(root, text="", font='Times 20 bold', bg='gray', fg='red', height=2, width=5)
+                        self.squares[i][j] = Label(root, text="", font='Times 20 bold', bg='white', fg='#344860', height=2, width=5)
                     else:
-                        self.squares[i][j] = Label(root, text=str(board[i][j]), font='Times 20 bold', bg='gray', fg='red', height=2, width=5)
+                        self.squares[i][j] = Label(root, text=str(board[i][j]), font='Times 20 bold', bg='white', fg='#344860', height=2, width=5)
                     self.squares[i][j].grid(sticky=W, row=i, column=j, padx=1, pady=1)
 
 
-        def updateSquares(board):
-            print("updating")
+        def updateSquares(i, j, board):
             self.squares[i][j].config(text=str(board[i][j]))
-            time.sleep(0.5)
+
+
+        def deleteSpace(i, j, board):
+            self.squares[i][j].config(text="")
 
 
         def updateSquaresFake(board):
@@ -43,15 +46,18 @@ class BuildProgram(object):
         def solve_sudoku(board):
             row, col = lookForSpace(board)
             if row == None:
-                updateSquaresFake(board)
+                updateSquares(0, 0, board)
                 return True
             for k in range(1, size+1):
                 if isCorrectlyPlaced(row, col, k, board):
                     board[row][col] = k
-                    #updateSquares(row, col, board)
+                    time.sleep(0.001)
+                    updateSquares(row, col, board)
+                    self.master .update()
                     if solve_sudoku(board):
                         return True
                     board[row][col] = 0
+                    deleteSpace(row, col, board)
             return False
 
         createSquares(self.board)
@@ -61,6 +67,12 @@ class BuildProgram(object):
 
 
 if __name__ == '__main__':
+    def on_closing(master):
+        print("Good bye")
+        master.destroy()
+
     root = Tk()
     BuildProgram(root)
+    root.configure(background='#344860')
+    root.protocol("WM_DELETE_WINDOW", lambda:on_closing(root))
     root.mainloop()
